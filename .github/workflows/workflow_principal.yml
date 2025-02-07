@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-##########################333
+
 jobs:
   tarea_principal:
     runs-on: ubuntu-latest
@@ -15,18 +15,18 @@ jobs:
       - name: Desencadenar flujo de trabajo secundario
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TRIGGER_WORKFLOW_TOKEN }} # Token con permisos
           script: |
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const workflow_id = 'workf2.yml' // Reemplaza con el nombre del archivo del flujo de trabajo secundario
+            const workflow_id = 'workflow_secundario.yml' # Nombre del archivo del workflow secundario
 
             return github.rest.actions.createWorkflowDispatch({
               owner: owner,
               repo: repo,
               workflow_id: workflow_id,
-              ref: context.ref, // Usa el mismo ref que el flujo de trabajo principal
+              ref: context.ref,
               inputs: {
-                mensaje: 'Hola desde el flujo de trabajo principal!' // Puedes enviar datos al flujo de trabajo secundario
+                mensaje: 'Hola desde el flujo de trabajo principal!'
               }
             })
