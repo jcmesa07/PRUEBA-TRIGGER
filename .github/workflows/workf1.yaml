@@ -1,0 +1,32 @@
+name: Flujo de trabajo principal
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tarea_principal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ejecutar tarea principal
+        run: echo "Realizando tarea principal..."
+
+      - name: Desencadenar flujo de trabajo secundario
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const workflow_id = 'workf2.yml' // Reemplaza con el nombre del archivo del flujo de trabajo secundario
+
+            return github.rest.actions.createWorkflowDispatch({
+              owner: owner,
+              repo: repo,
+              workflow_id: workflow_id,
+              ref: context.ref, // Usa el mismo ref que el flujo de trabajo principal
+              inputs: {
+                mensaje: 'Hola desde el flujo de trabajo principal!' // Puedes enviar datos al flujo de trabajo secundario
+              }
+            })

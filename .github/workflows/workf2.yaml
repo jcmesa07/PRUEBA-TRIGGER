@@ -1,0 +1,18 @@
+name: Flujo de trabajo secundario
+
+on:
+  workflow_dispatch:
+    inputs:
+      mensaje:
+        description: 'Mensaje del flujo de trabajo principal'
+        required: true
+
+jobs:
+  tarea_secundaria:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar mensaje
+        run: echo "${{ github.event.inputs.mensaje }}"
+
+      - name: Ejecutar tarea secundaria
+        run: echo "Realizando tarea secundaria..."
